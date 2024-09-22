@@ -19,7 +19,7 @@ const SearchBar = ({ onSubmit }) => {
     onSubmit(inputValue);
   };
   return (
-    <header className={s.serchWrap}>
+    <header className={s.searchWrap}>
       <form className={s.searchForm} onSubmit={handleSubmit}>
         <input
           className={s.searchInput}

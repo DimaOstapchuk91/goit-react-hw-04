@@ -9,8 +9,8 @@ import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
 import ImageModal from './components/ImageModal/ImageModal';
 
 function App() {
-  const [serchValue, setSercjValue] = useState('');
-  const [dataSerch, setDataSerch] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+  const [dataImage, setDataImage] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoader, setIsLoader] = useState(false);
   const [getErr, setGetErr] = useState(false);
@@ -19,15 +19,15 @@ function App() {
   const [imageModal, setImageModal] = useState('');
 
   useEffect(() => {
-    if (!serchValue) {
+    if (!searchValue) {
       return;
     }
     const getData = async () => {
       try {
         setGetErr(false);
         setIsLoader(true);
-        const data = await fetchArticles(page, serchValue);
-        setDataSerch(prev => [...prev, ...data.results]);
+        const data = await fetchArticles(page, searchValue);
+        setDataImage(prev => [...prev, ...data.results]);
         setMaxPage(data.total_pages);
         if (data.total_pages === 0) {
           getNotFaundData();
@@ -39,7 +39,7 @@ function App() {
       }
     };
     getData();
-  }, [page, serchValue]);
+  }, [page, searchValue]);
 
   function openModal(imgUrl) {
     setImageModal(imgUrl);
@@ -52,7 +52,7 @@ function App() {
 
   const getNotFaundData = () => {
     return toast('The data for your request was not found', {
-      icon: '😥😥',
+      icon: '😥',
       style: {
         borderRadius: '10px',
         background: '#333',
@@ -62,8 +62,9 @@ function App() {
   };
 
   const getSubmitValue = value => {
-    setSercjValue(value);
-    setDataSerch([]);
+    setSearchValue(value);
+    setDataImage([]);
+    setPage(1);
   };
 
   const getLoadMoreImg = () => {
@@ -74,20 +75,18 @@ function App() {
     <>
       <SearchBar onSubmit={getSubmitValue} />
       {isLoader && <Loader />}
-      {dataSerch.length > 0 && (
-        <ImageGallery dataSerch={dataSerch} openModal={openModal} />
+      {dataImage.length > 0 && (
+        <ImageGallery dataImage={dataImage} openModal={openModal} />
       )}
-      {dataSerch.length > 0 && maxPage > page && (
+      {dataImage.length > 0 && maxPage > page && (
         <LoadMoreBtn loadMore={getLoadMoreImg} />
       )}
       {getErr && <ErrorMessage />}
-
       <ImageModal
         modalIsOpen={isOpenModal}
         closeModal={closeModal}
         imageModal={imageModal}
       />
-
       <Toaster position='top-center' reverseOrder={false} />
     </>
   );

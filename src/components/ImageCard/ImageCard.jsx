@@ -1,7 +1,7 @@
 import s from './ImageCard.module.css';
 
-const ImageCard = ({ dataSerch, openModal }) => {
-  const { urls, description, likes } = dataSerch;
+const ImageCard = ({ dataImage, openModal }) => {
+  const { urls, description, likes } = dataImage;
 
   return (
     <li>
